@@ -1,0 +1,1906 @@
+openapi: 3.0.3
+info:
+  title: Phoenix Ident API Project Template
+  version: 0.1.0
+servers:
+- url: https://api.sdaconsole.io/ident
+paths:
+  /v1/tenant:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Create Tenant Handler
+      operationId: create_tenant_handler_v1_tenant_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      security:
+      - NONE: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    patch:
+      tags:
+      - ident
+      - commands
+      summary: Update Tenant Handler
+      operationId: update_tenant_handler_v1_tenant_patch
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read Tenant Handler
+      operationId: read_tenant_handler_v1_tenant_get
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/tenant/select/{tenant_id}:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Select Tenant Handler
+      operationId: select_tenant_handler_v1_tenant_select__tenant_id__post
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Tenant Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+  /v1/user:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Create User Handler
+      operationId: create_user_handler_v1_user_post
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+  /v1/user/{user_id}:
+    patch:
+      tags:
+      - ident
+      - commands
+      summary: Update User Handler
+      operationId: update_user_handler_v1_user__user_id__patch
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    delete:
+      tags:
+      - ident
+      - commands
+      summary: Delete User Handler
+      operationId: delete_user_handler_v1_user__user_id__delete
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read User Handler
+      operationId: read_user_handler_v1_user__user_id__get
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/user/confirm:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Confirm User Handler
+      operationId: confirm_user_handler_v1_user_confirm_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmUserRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserConfirmationError'
+      security:
+      - NONE: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+  /v1/user/login:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Login User Handler
+      operationId: login_user_handler_v1_user_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUserResponse'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginError'
+      security:
+      - NONE: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+  /v1/user/forgot_password:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Forgot Password Handler
+      operationId: forgot_password_handler_v1_user_forgot_password_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForgotPasswordResponse'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+      security:
+      - NONE: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+  /v1/user_role:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Create User Role Handler
+      operationId: create_user_role_handler_v1_user_role_post
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRoleRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+  /v1/user_role/{user_role_id}:
+    patch:
+      tags:
+      - ident
+      - commands
+      summary: Update User Role Handler
+      operationId: update_user_role_handler_v1_user_role__user_role_id__patch
+      parameters:
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRoleRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    delete:
+      tags:
+      - ident
+      - commands
+      summary: Delete User Role Handler
+      operationId: delete_user_role_handler_v1_user_role__user_role_id__delete
+      parameters:
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read User Role Handler
+      operationId: read_user_role_handler_v1_user_role__user_role_id__get
+      parameters:
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/tenant/{tenant_id}/users:
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read All Users Handler
+      operationId: read_all_users_handler_v1_tenant__tenant_id__users_get
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+                title: Response Read All Users Handler V1 Tenant  Tenant Id  Users
+                  Get
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/user_role/{user_role_id}/user:
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read Users For User Role Handler
+      operationId: read_users_for_user_role_handler_v1_user_role__user_role_id__user_get
+      parameters:
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+                title: Response Read Users For User Role Handler V1 User Role  User
+                  Role Id  User Get
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/user/{user_id}/user_role:
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read User Roles For User Handler
+      operationId: read_user_roles_for_user_handler_v1_user__user_id__user_role_get
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRoleResponse'
+                title: Response Read User Roles For User Handler V1 User  User Id  User
+                  Role Get
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/public/graphql:
+    get:
+      summary: Handle Http Get
+      operationId: handle_http_get_v1_public_graphql_get
+      responses:
+        '200':
+          description: The GraphiQL integrated development environment.
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: Not found if GraphiQL or query via GET are not enabled.
+      security:
+      - NONE: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_graphql/invocations
+    post:
+      summary: Handle Http Post
+      operationId: handle_http_post_v1_public_graphql_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - NONE: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_graphql/invocations
+  /v1/graphql:
+    get:
+      summary: Handle Http Get
+      operationId: handle_http_get_v1_graphql_get
+      responses:
+        '200':
+          description: The GraphiQL integrated development environment.
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: Not found if GraphiQL or query via GET are not enabled.
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_graphql/invocations
+    post:
+      summary: Handle Http Post
+      operationId: handle_http_post_v1_graphql_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_graphql/invocations
+components:
+  schemas:
+    ConfirmUserRequest:
+      properties:
+        username:
+          type: string
+          title: Username
+        confirmation_code:
+          type: string
+          title: Confirmation Code
+      type: object
+      required:
+      - username
+      - confirmation_code
+      title: ConfirmUserRequest
+    CreateTenantRequest:
+      properties:
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        email:
+          type: string
+          title: Email
+        company_name:
+          type: string
+          title: Company Name
+        phone_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone Number
+        privacy_accepted:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Privacy Accepted
+          default: false
+        locale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Locale
+        last_login_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Login Timestamp
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        agree_to_contact:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Agree To Contact
+          default: false
+        password:
+          type: string
+          title: Password
+        password_confirmation:
+          type: string
+          title: Password Confirmation
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+        industry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Industry
+        enforce_mfa:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enforce Mfa
+        import_demo_data:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Import Demo Data
+          default: true
+        max_user_role_expiration_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max User Role Expiration Days
+        app_client_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Client Id
+      type: object
+      required:
+      - first_name
+      - last_name
+      - email
+      - company_name
+      - password
+      - password_confirmation
+      title: CreateTenantRequest
+    CreateUserRequest:
+      properties:
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        email:
+          type: string
+          title: Email
+        company_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Company Name
+        phone_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone Number
+        privacy_accepted:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Privacy Accepted
+          default: false
+        locale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Locale
+        last_login_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Login Timestamp
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        agree_to_contact:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Agree To Contact
+          default: false
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        password_confirmation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password Confirmation
+      type: object
+      required:
+      - first_name
+      - last_name
+      - email
+      title: CreateUserRequest
+    CreateUserRoleRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        policies:
+          items:
+            ref: '#/components/schemas/Policy'
+          type: array
+          title: Policies
+        sso_group_mapping:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Sso Group Mapping
+      type: object
+      required:
+      - name
+      - policies
+      title: CreateUserRoleRequest
+    FeatureFlag:
+      properties:
+        feature_name:
+          type: string
+          title: Feature Name
+        is_enabled:
+          type: boolean
+          title: Is Enabled
+          default: false
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - feature_name
+      title: FeatureFlag
+    ForgotPasswordCodeDeliveryDetails:
+      properties:
+        attribute_name:
+          type: string
+          title: Attribute Name
+        delivery_medium:
+          type: string
+          title: Delivery Medium
+        destination:
+          type: string
+          title: Destination
+      type: object
+      required:
+      - attribute_name
+      - delivery_medium
+      - destination
+      title: ForgotPasswordCodeDeliveryDetails
+    ForgotPasswordNextStep:
+      properties:
+        code_delivery_details:
+          ref: '#/components/schemas/ForgotPasswordCodeDeliveryDetails'
+        reset_password_step:
+          type: string
+          title: Reset Password Step
+      type: object
+      required:
+      - code_delivery_details
+      - reset_password_step
+      title: ForgotPasswordNextStep
+    ForgotPasswordRequest:
+      properties:
+        username:
+          type: string
+          title: Username
+        super_tenant_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Super Tenant Id
+        app_client_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Client Id
+      type: object
+      required:
+      - username
+      title: ForgotPasswordRequest
+    ForgotPasswordResponse:
+      properties:
+        is_password_reset:
+          type: boolean
+          title: Is Password Reset
+          default: false
+        next_step:
+          ref: '#/components/schemas/ForgotPasswordNextStep'
+      type: object
+      required:
+      - next_step
+      title: ForgotPasswordResponse
+    InternalServerError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: InternalServerError
+      example:
+        error: InternalServerError
+        message: Internal server error
+    LoginUserRequest:
+      properties:
+        username:
+          type: string
+          title: Username
+        password:
+          type: string
+          title: Password
+        super_tenant_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Super Tenant Id
+        app_client_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Client Id
+      type: object
+      required:
+      - username
+      - password
+      title: LoginUserRequest
+    LoginUserResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        expires_in:
+          type: integer
+          title: Expires In
+        token_type:
+          type: string
+          title: Token Type
+        refresh_token:
+          type: string
+          title: Refresh Token
+        id_token:
+          type: string
+          title: Id Token
+      type: object
+      required:
+      - access_token
+      - expires_in
+      - token_type
+      - refresh_token
+      - id_token
+      title: LoginUserResponse
+    Policy:
+      properties:
+        policy_id:
+          type: string
+          title: Policy Id
+        name:
+          type: string
+          title: Name
+        action:
+          items:
+            type: string
+          type: array
+          title: Action
+        resource:
+          items:
+            type: string
+          type: array
+          title: Resource
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - name
+      - action
+      - resource
+      title: Policy
+    RequestValidationError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: RequestValidationError
+      example:
+        error: RequestValidationError
+        message: Request validation error
+    TenantNotFoundError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: TenantNotFoundError
+      example:
+        error: TenantNotFoundError
+        message: Tenant not found
+    TenantResponse:
+      properties:
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+          description: Version number of the object, used for optimistic locking and
+            change tracking
+        creation_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creation User Id
+          description: Unique identifier of the user who created this object
+        update_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Update User Id
+          description: Unique identifier of the user who last updated this object
+        creation_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Creation Timestamp
+          description: Date and time when this object was first created (ISO 8601
+            format)
+        update_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Update Timestamp
+          description: Date and time when this object was last modified (ISO 8601
+            format)
+        tenant_id:
+          type: string
+          title: Tenant Id
+        owner_id:
+          type: string
+          title: Owner Id
+        company_name:
+          type: string
+          title: Company Name
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+        industry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Industry
+        is_active:
+          type: boolean
+          title: Is Active
+          default: true
+        enforce_mfa:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enforce Mfa
+        import_demo_data:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Import Demo Data
+        max_user_role_expiration_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max User Role Expiration Days
+        expiration_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expiration Timestamp
+        custom_logo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Custom Logo
+        feature_flags:
+          anyOf:
+          - items:
+              ref: '#/components/schemas/FeatureFlag'
+            type: array
+          - type: 'null'
+          title: Feature Flags
+        existing_user:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Existing User
+          default: false
+        sso_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Sso Enabled
+          default: false
+        manage_sso_users_in_sda:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Manage Sso Users In Sda
+          default: false
+      type: object
+      required:
+      - owner_id
+      - company_name
+      title: TenantResponse
+    UiSlotCard:
+      properties:
+        id:
+          type: string
+          title: Id
+        slot:
+          type: string
+          title: Slot
+      type: object
+      required:
+      - id
+      - slot
+      title: UiSlotCard
+    UpdateTenantRequest:
+      properties:
+        owner_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Id
+        company_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Company Name
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+        industry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Industry
+        enforce_mfa:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enforce Mfa
+        import_demo_data:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Import Demo Data
+        max_user_role_expiration_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max User Role Expiration Days
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+      type: object
+      title: UpdateTenantRequest
+    UpdateUserRequest:
+      properties:
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        company_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Company Name
+        phone_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone Number
+        privacy_accepted:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Privacy Accepted
+        locale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Locale
+        last_login_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Login Timestamp
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        agree_to_contact:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Agree To Contact
+        ui_slots:
+          anyOf:
+          - items:
+              ref: '#/components/schemas/UiSlotCard'
+            type: array
+          - type: 'null'
+          title: Ui Slots
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+      type: object
+      title: UpdateUserRequest
+    UpdateUserRoleRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        policies:
+          anyOf:
+          - items:
+              ref: '#/components/schemas/Policy'
+            type: array
+          - type: 'null'
+          title: Policies
+        sso_group_mapping:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Sso Group Mapping
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+      type: object
+      title: UpdateUserRoleRequest
+    UserConfirmationError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: UserConfirmationError
+      example:
+        error: UserConfirmationError
+        message: Error while confirming user
+    UserLoginError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: UserLoginError
+      example:
+        error: UserLoginError
+        message: Error while logging in user
+    UserNotFoundError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: UserNotFoundError
+      example:
+        error: UserNotFoundError
+        message: User not found
+    UserResponse:
+      properties:
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+          description: Version number of the object, used for optimistic locking and
+            change tracking
+        creation_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creation User Id
+          description: Unique identifier of the user who created this object
+        update_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Update User Id
+          description: Unique identifier of the user who last updated this object
+        creation_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Creation Timestamp
+          description: Date and time when this object was first created (ISO 8601
+            format)
+        update_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Update Timestamp
+          description: Date and time when this object was last modified (ISO 8601
+            format)
+        user_id:
+          type: string
+          title: User Id
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        email:
+          type: string
+          title: Email
+        company_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Company Name
+        phone_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone Number
+        privacy_accepted:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Privacy Accepted
+        locale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Locale
+        last_login_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Login Timestamp
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        agree_to_contact:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Agree To Contact
+        ui_slots:
+          anyOf:
+          - items:
+              ref: '#/components/schemas/UiSlotCard'
+            type: array
+          - type: 'null'
+          title: Ui Slots
+        source:
+          ref: '#/components/schemas/UserSourceEnum'
+      type: object
+      required:
+      - first_name
+      - last_name
+      - email
+      - source
+      title: UserResponse
+    UserRoleNotFoundError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: UserRoleNotFoundError
+      example:
+        error: UserRoleNotFoundError
+        message: User role not found
+    UserRoleResponse:
+      properties:
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+          description: Version number of the object, used for optimistic locking and
+            change tracking
+        creation_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creation User Id
+          description: Unique identifier of the user who created this object
+        update_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Update User Id
+          description: Unique identifier of the user who last updated this object
+        creation_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Creation Timestamp
+          description: Date and time when this object was first created (ISO 8601
+            format)
+        update_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Update Timestamp
+          description: Date and time when this object was last modified (ISO 8601
+            format)
+        user_role_id:
+          type: string
+          title: User Role Id
+        name:
+          type: string
+          title: Name
+        group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        policies:
+          items:
+            ref: '#/components/schemas/Policy'
+          type: array
+          title: Policies
+        is_system_role:
+          type: boolean
+          title: Is System Role
+          default: false
+        sso_group_mapping:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Sso Group Mapping
+      type: object
+      required:
+      - name
+      - policies
+      title: UserRoleResponse
+    UserSourceEnum:
+      type: string
+      enum:
+      - SDA
+      - SAML
+      title: UserSourceEnum
+      description: Different Options for User Source
+
