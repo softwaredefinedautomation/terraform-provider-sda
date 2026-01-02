@@ -20,7 +20,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/sda/sda",
+		Address: "registry.terraform.io/softwaredefinedautomation/sda",
 		Debug:   debug,
 	}
 
