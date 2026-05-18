@@ -36,13 +36,13 @@ type AuthResponse struct {
 }
 
 // NewClient -
-func NewRestClient(host, username, password *string) (*Client, error) {
+func NewRestClient(host, username, password *string, tenantID string) (*Client, error) {
 	log.Print("Creating new REST Client")
 	c := Client{
 		HTTPClient: &http.Client{Timeout: 30 * time.Second},
-		HostURL: *host,
+		HostURL:    *host,
 	}
-	
+
 	// If username, password or host url are not provided, return empty client
 	if username == nil || password == nil || host == nil {
 		return &c, nil
@@ -56,6 +56,20 @@ func NewRestClient(host, username, password *string) (*Client, error) {
 	ar, err := c.SignIn()
 	if err != nil {
 		return nil, err
+	}
+
+	// Check if tenantID is provided, if so select tenant for the session and get new token for the tenant
+	if tenantID != "" {
+		log.Print("Switching to tenant: ", tenantID)
+		err = c.SelectTenant(tenantID, &ar.IdToken)
+		if err != nil {
+			return nil, err
+		}
+
+		ar, err = c.SignIn()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	c.IdToken = ar.IdToken

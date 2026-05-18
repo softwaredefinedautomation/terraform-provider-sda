@@ -18,15 +18,16 @@ import (
 	"github.com/sda/terraform-provider-sda/internal/provider/device"
 	"github.com/sda/terraform-provider-sda/internal/provider/document"
 	"github.com/sda/terraform-provider-sda/internal/provider/gateway"
+	"github.com/sda/terraform-provider-sda/internal/provider/license"
 	"github.com/sda/terraform-provider-sda/internal/provider/link"
+	"github.com/sda/terraform-provider-sda/internal/provider/project"
 	"github.com/sda/terraform-provider-sda/internal/provider/resourcegroup"
+	"github.com/sda/terraform-provider-sda/internal/provider/role"
 	"github.com/sda/terraform-provider-sda/internal/provider/secret"
 	"github.com/sda/terraform-provider-sda/internal/provider/tag"
-	"github.com/sda/terraform-provider-sda/internal/provider/vault"
-	"github.com/sda/terraform-provider-sda/internal/provider/license"
-	"github.com/sda/terraform-provider-sda/internal/provider/project"
-	"github.com/sda/terraform-provider-sda/internal/provider/role"
 	"github.com/sda/terraform-provider-sda/internal/provider/user"
+	"github.com/sda/terraform-provider-sda/internal/provider/user_role_association"
+	"github.com/sda/terraform-provider-sda/internal/provider/vault"
 )
 
 const (
@@ -53,6 +54,7 @@ type SDAProviderModel struct {
 	Host     types.String `tfsdk:"host"`
 	Username types.String `tfsdk:"username"`
 	Password types.String `tfsdk:"password"`
+	TenantID types.String `tfsdk:"tenant_id"`
 }
 
 func (p *SDAProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -76,6 +78,10 @@ func (p *SDAProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 				Optional:            true,
 				Sensitive:           true,
 			},
+			"tenant_id": schema.StringAttribute{
+				MarkdownDescription: "SDA tenant ID: Provided via SDA_TENANT_ID environment variable.",
+				Optional:            true,
+			},
 		},
 	}
 }
@@ -90,12 +96,13 @@ func (p *SDAProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	
+
 	// Default values to environment variables, but override
 	// with Terraform configuration value if set.
 	host := os.Getenv("SDA_HOST")
 	username := os.Getenv("SDA_USERNAME")
 	password := os.Getenv("SDA_PASSWORD")
+	tenantID := os.Getenv("SDA_TENANT_ID")
 
 	if !config.Host.IsNull() {
 		host = config.Host.ValueString()
@@ -107,6 +114,10 @@ func (p *SDAProvider) Configure(ctx context.Context, req provider.ConfigureReque
 
 	if !config.Password.IsNull() {
 		password = config.Password.ValueString()
+	}
+
+	if !config.TenantID.IsNull() {
+		tenantID = config.TenantID.ValueString()
 	}
 
 	// If any of the expected configurations are missing, return
@@ -149,12 +160,13 @@ func (p *SDAProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	ctx = tflog.SetField(ctx, "sda_host", host)
 	ctx = tflog.SetField(ctx, "sda_username", username)
 	ctx = tflog.SetField(ctx, "sda_password", password)
+	ctx = tflog.SetField(ctx, "sda_tenant_id", tenantID)
 	ctx = tflog.MaskFieldValuesWithFieldKeys(ctx, "sda_password")
 
 	tflog.Debug(ctx, "Creating SDA client")
 
 	// Create a new SDA REST client using the configuration values
-	restclient, err := clients.NewRestClient(&host, &username, &password)
+	restclient, err := clients.NewRestClient(&host, &username, &password, tenantID)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Create SDA API Client",
@@ -185,6 +197,7 @@ func (p *SDAProvider) Resources(ctx context.Context) []func() resource.Resource 
 		link.NewLinkResource,
 		license.NewLicenseResource,
 		role.NewRoleResource,
+		user_role_association.NewUserRoleAssociationResource,
 		user.NewUserResource,
 		project.NewProjectResource,
 	}

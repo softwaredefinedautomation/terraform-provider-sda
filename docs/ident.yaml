@@ -691,6 +691,228 @@ paths:
         httpMethod: POST
         type: aws_proxy
         uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
+  /v1/user_role_user_link/user/{user_id}/user_role/{user_role_id}:
+    post:
+      tags:
+      - ident
+      - commands
+      summary: Create User Role Association Handler
+      operationId: create_user_role_user_link_handler_v1_user_role_user_link_user__user_id__user_role__user_role_id__post
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRoleUserLinkRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    patch:
+      tags:
+      - ident
+      - commands
+      summary: Update User Role Association Handler
+      operationId: update_user_role_user_link_handler_v1_user_role_user_link_user__user_id__user_role__user_role_id__patch
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRoleUserLinkRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    delete:
+      tags:
+      - ident
+      - commands
+      summary: Delete User Role Association Handler
+      operationId: delete_user_role_user_link_handler_v1_user_role_user_link_user__user_id__user_role__user_role_id__delete
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_commands/invocations
+    get:
+      tags:
+      - ident
+      - queries
+      summary: Read User Role Association Handler
+      operationId: read_user_role_user_link_handler_v1_user_role_user_link_user__user_id__user_role__user_role_id__get
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: user_role_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Role Id
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkResponse'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestValidationError'
+          description: Unprocessable Content
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal Server Error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleUserLinkNotFoundError'
+          description: Not Found
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:SDA-IDENT-api_queries/invocations
   /v1/tenant/{tenant_id}/users:
     get:
       tags:
@@ -1088,7 +1310,7 @@ components:
           title: Description
         policies:
           items:
-            ref: '#/components/schemas/Policy'
+            $ref: '#/components/schemas/Policy'
           type: array
           title: Policies
         sso_group_mapping:
@@ -1103,6 +1325,16 @@ components:
       - name
       - policies
       title: CreateUserRoleRequest
+    CreateUserRoleUserLinkRequest:
+      properties:
+        expiration_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expiration Timestamp
+      type: object
+      title: CreateUserRoleUserLinkRequest
     FeatureFlag:
       properties:
         feature_name:
@@ -1141,7 +1373,7 @@ components:
     ForgotPasswordNextStep:
       properties:
         code_delivery_details:
-          ref: '#/components/schemas/ForgotPasswordCodeDeliveryDetails'
+          $ref: '#/components/schemas/ForgotPasswordCodeDeliveryDetails'
         reset_password_step:
           type: string
           title: Reset Password Step
@@ -1176,7 +1408,7 @@ components:
           title: Is Password Reset
           default: false
         next_step:
-          ref: '#/components/schemas/ForgotPasswordNextStep'
+          $ref: '#/components/schemas/ForgotPasswordNextStep'
       type: object
       required:
       - next_step
@@ -1422,7 +1654,7 @@ components:
         feature_flags:
           anyOf:
           - items:
-              ref: '#/components/schemas/FeatureFlag'
+              $ref: '#/components/schemas/FeatureFlag'
             type: array
           - type: 'null'
           title: Feature Flags
@@ -1567,7 +1799,7 @@ components:
         ui_slots:
           anyOf:
           - items:
-              ref: '#/components/schemas/UiSlotCard'
+              $ref: '#/components/schemas/UiSlotCard'
             type: array
           - type: 'null'
           title: Ui Slots
@@ -1598,7 +1830,7 @@ components:
         policies:
           anyOf:
           - items:
-              ref: '#/components/schemas/Policy'
+              $ref: '#/components/schemas/Policy'
             type: array
           - type: 'null'
           title: Policies
@@ -1616,6 +1848,31 @@ components:
           title: Object Version
       type: object
       title: UpdateUserRoleRequest
+    UpdateUserRoleUserLinkRequest:
+      properties:
+        user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Id
+        user_role_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role Id
+        expiration_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expiration Timestamp
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+      type: object
+      title: UpdateUserRoleUserLinkRequest
     UserConfirmationError:
       properties:
         error:
@@ -1784,12 +2041,12 @@ components:
         ui_slots:
           anyOf:
           - items:
-              ref: '#/components/schemas/UiSlotCard'
+              $ref: '#/components/schemas/UiSlotCard'
             type: array
           - type: 'null'
           title: Ui Slots
         source:
-          ref: '#/components/schemas/UserSourceEnum'
+          $ref: '#/components/schemas/UserSourceEnum'
       type: object
       required:
       - first_name
@@ -1877,7 +2134,7 @@ components:
           title: Description
         policies:
           items:
-            ref: '#/components/schemas/Policy'
+            $ref: '#/components/schemas/Policy'
           type: array
           title: Policies
         is_system_role:
@@ -1896,6 +2153,85 @@ components:
       - name
       - policies
       title: UserRoleResponse
+    UserRoleUserLinkNotFoundError:
+      properties:
+        error:
+          type: string
+          title: Error
+        message:
+          type: string
+          title: Message
+        detail:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: string
+          - type: 'null'
+          title: Detail
+      type: object
+      required:
+      - error
+      - message
+      title: UserRoleUserLinkNotFoundError
+      example:
+        error: UserRoleUserLinkNotFoundError
+        message: User Role Association not found
+    UserRoleUserLinkResponse:
+      properties:
+        object_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Object Version
+          description: Version number of the object, used for optimistic locking and
+            change tracking
+        creation_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creation User Id
+          description: Unique identifier of the user who created this object
+        update_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Update User Id
+          description: Unique identifier of the user who last updated this object
+        creation_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Creation Timestamp
+          description: Date and time when this object was first created (ISO 8601
+            format)
+        update_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Update Timestamp
+          description: Date and time when this object was last modified (ISO 8601
+            format)
+        user_id:
+          type: string
+          title: User Id
+        user_role_id:
+          type: string
+          title: User Role Id
+        expiration_timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expiration Timestamp
+      type: object
+      required:
+      - user_id
+      - user_role_id
+      title: UserRoleUserLinkResponse
     UserSourceEnum:
       type: string
       enum:
