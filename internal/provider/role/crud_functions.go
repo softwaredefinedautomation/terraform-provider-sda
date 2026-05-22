@@ -170,12 +170,55 @@ func (r *RoleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	state.Description = types.StringPointerValue(apiResp.Description)
 	state.IsSystemRole = types.BoolValue(apiResp.IsSystemRole)
 
-	// Preserve incoming lists if present
-	if !state.Policies.IsUnknown() {
-		// keep existing state.Policies
+	// Read policies from API response
+	if apiResp.Policies != nil {
+		var policyStrings []string
+		for _, p := range apiResp.Policies {
+			policyJSON, err := json.Marshal(p)
+			if err != nil {
+				resp.Diagnostics.AddError("Decode Error",
+					fmt.Sprintf("Error marshalling policy: %s", err))
+				return
+			}
+
+			// Strip server-generated fields that aren't in user's config
+			var policyMap map[string]interface{}
+			if err := json.Unmarshal(policyJSON, &policyMap); err != nil {
+				resp.Diagnostics.AddError("Decode Error",
+					fmt.Sprintf("Error unmarshalling policy: %s", err))
+				return
+			}
+			delete(policyMap, "policy_id")
+
+			cleanJSON, err := json.Marshal(policyMap)
+			if err != nil {
+				resp.Diagnostics.AddError("Decode Error",
+					fmt.Sprintf("Error marshalling cleaned policy: %s", err))
+				return
+			}
+										
+			policyStrings = append(policyStrings, string(cleanJSON))
+		}
+		policyList, diags := types.ListValueFrom(ctx, types.StringType, policyStrings)
+		if diags.HasError() {
+			resp.Diagnostics.Append(diags...)
+			return
+		}
+		state.Policies = policyList
+	} else {
+		state.Policies = types.ListNull(types.StringType)
 	}
-	if !state.SsoGroupMapping.IsUnknown() {
-		// keep existing state.SsoGroupMapping
+
+	// Read SSO group mapping from API response
+	if apiResp.SsoGroupMapping != nil {
+		ssoList, diags := types.ListValueFrom(ctx, types.StringType, apiResp.SsoGroupMapping)
+		if diags.HasError() {
+			resp.Diagnostics.Append(diags...)
+			return
+		}
+		state.SsoGroupMapping = ssoList
+	} else {
+		state.SsoGroupMapping = types.ListNull(types.StringType)
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
