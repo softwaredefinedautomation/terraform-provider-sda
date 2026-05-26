@@ -167,7 +167,12 @@ func (r *RoleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	state.UserRoleID = types.StringValue(apiResp.UserRoleID)
 	state.Name = types.StringValue(apiResp.Name)
 	state.GroupID = types.StringPointerValue(apiResp.GroupID)
-	state.Description = types.StringPointerValue(apiResp.Description)
+	// state.Description = types.StringPointerValue(apiResp.Description)
+	if apiResp.Description != nil && *apiResp.Description != "" {
+		state.Description = types.StringValue(*apiResp.Description)
+	} else if !state.Description.IsNull() {
+		state.Description = types.StringPointerValue(apiResp.Description)
+	}
 	state.IsSystemRole = types.BoolValue(apiResp.IsSystemRole)
 
 	// Read policies from API response
@@ -189,6 +194,13 @@ func (r *RoleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 				return
 			}
 			delete(policyMap, "policy_id")
+
+			// Remove null description to prevent perpetual diff
+			if desc, ok := policyMap["description"]; ok {
+				if desc == nil || desc == "" {
+					delete(policyMap, "description")
+				}
+			}
 
 			cleanJSON, err := json.Marshal(policyMap)
 			if err != nil {
@@ -247,8 +259,8 @@ func (r *RoleResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		}
 	}
 	if !plan.Description.Equal(state.Description) {
-		if plan.Description.IsNull() {
-			payload["description"] = ""
+		if plan.Description.IsNull() || plan.Description.ValueString() == "" {
+			// payload["description"] = ""
 		} else {
 			payload["description"] = plan.Description.ValueString()
 		}
@@ -328,9 +340,12 @@ func (r *RoleResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	state.CreationTimestamp = types.StringValue(apiResp.CreationTimestamp)
 	state.UpdateTimestamp = types.StringPointerValue(apiResp.UpdateTimestamp)
 	state.UserRoleID = types.StringValue(apiResp.UserRoleID)
-	state.Name = types.StringValue(apiResp.Name)
-	state.GroupID = types.StringPointerValue(apiResp.GroupID)
-	state.Description = types.StringPointerValue(apiResp.Description)
+	// state.Name = types.StringValue(apiResp.Name)
+	state.Name = plan.Name
+	// state.GroupID = types.StringPointerValue(apiResp.GroupID)
+	state.GroupID = plan.GroupID
+	// state.Description = types.StringPointerValue(apiResp.Description)
+	state.Description = plan.Description
 	state.IsSystemRole = types.BoolValue(apiResp.IsSystemRole)
 
 	// Preserve plan policies and sso_group_mapping in state to avoid inconsistent results
