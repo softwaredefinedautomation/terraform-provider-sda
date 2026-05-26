@@ -25,7 +25,7 @@ Once the SDA provider is completed, we will want to [publish it on the Terraform
 3. Build the provider using the make `release` command:
 
 ```shell
-make release
+make release 
 ```
 
 This will:
